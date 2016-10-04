@@ -70,6 +70,25 @@ Hello from Elixir.WithMix
 The `Application` behaviour is used typically in a module that exposes a public-facing API. `Application` is responsible for starting your supervision trees, and calling any cleanup code when your application exits. 
 
 
+The new application module looks like this (`demo_application.ex`):
+
+```
+defmodule DemoApplication do
+  alias DemoApplication.{DemoSupervisor, DemoModule}
+  use Application 
+
+  def start(_type, _args) do
+    DemoSupervisor.start_link()
+  end
+
+  def use_module() do
+    DemoModule.say_it(:demo_module)
+  end
+end
+```
+
+
+
 ## Escripts
 Generates an executable from BEAM files. Requires the user already have the VM installed. Good practice to have a separate module for running the code. 
 

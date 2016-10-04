@@ -9,9 +9,4 @@ defmodule DemoApplication do
   def use_module() do
     DemoModule.say_it(:demo_module)
   end
-
-  def stop() do
-    IO.puts "Stopping application..."
-    :ok
-  end
 end
