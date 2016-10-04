@@ -89,6 +89,19 @@ end
 
 
 
+You would also specify this module in the `application/0` function in your `mix.exs` file:
+
+```
+  def application do
+    [
+      applications: [:logger],
+      mod: {DemoApplication, []}
+    ]
+  end
+```
+
+Mix will use the `start/2` callback in the module you specify, along with any arguments specified in the second element of the tuple. 
+
 ## Escripts
 Generates an executable from BEAM files. Requires the user already have the VM installed. Good practice to have a separate module for running the code. 
 
