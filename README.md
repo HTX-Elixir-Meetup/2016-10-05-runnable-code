@@ -71,7 +71,57 @@ The `Application` behaviour is used typically in a module that exposes a public-
 
 
 ## Escripts
-Generates an executable from BEAM files. Requires the user already have the VM installed. 
+Generates an executable from BEAM files. Requires the user already have the VM installed. Good practice to have a separate module for running the code. 
+
+To use an Escript, you will need a separate module to run the code from the script. We'll create a module called `demo_CLI.ex` in our lib directory. It requires a function called `main` that accepts arguments from the command line. The module looks like this:
+
+```
+defmodule DemoApplication.CLI do
+  alias DemoApplication.DemoModule
+
+  def main(args) do
+    args |> parse_args |> do_process
+  end
+
+  def parse_args(args) do
+    options = OptionParser.parse(args)
+
+    case options do
+      {[help: true], _, _} -> :help
+      {[h: true], _, _}   -> :help
+      _ -> :run
+    end
+  end
+
+  def do_process(:run) do
+    DemoModule.say_it(:demo_module)
+  end
+
+  def do_process(:help) do
+    IO.puts("Welcome to Demo App.")
+  end
+end
+```
+
+
+In `mix.exs`, include the following within the `project/0` function: `escript: escript` and create a new `escript/0` function: 
+
+```
+def escript, do: [main_module: HouTax.CLI]
+```
+
+
+Then compile the script:
+```
+$ mix escript.build
+Compiling 4 files (.ex)
+Generated demo_application app
+Generated escript demo_application with MIX_ENV=dev
+```
+
+This creates an executable called `demo_application`. You can run it immediately with `./demo_application`.
+
+
 
 ## Releases with Distillery
 Generates an executable from BEAM files and includes the VM. Should be compiled on the target OS.
