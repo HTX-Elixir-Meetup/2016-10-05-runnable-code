@@ -52,7 +52,7 @@ iex(2)>
 
 
 ## Using Mix
-Once your codebase expands beyond a few modules, or you start to include dependencies, you will want to start using a tool to manage the code. Elixir ships with Mix, and functions as a test runner, dependency manager, and a build tool. 
+Once your codebase expands beyond a few modules, or you start to include dependencies, you will want to start using a tool to manage the code. Elixir ships with Mix, which functions as a test runner, dependency manager, and a build tool. 
 
 Make a new project with `$ mix new app_name`. This will create a directory structure, along with config files, a place for your dependencies and beam files to live, and a test directory.
 
