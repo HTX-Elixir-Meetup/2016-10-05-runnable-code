@@ -161,3 +161,14 @@ This creates an executable called `demo_application`. You can run it immediately
 
 ## Releases with Distillery
 Generates an executable from BEAM files and includes the VM. Should be compiled on the target OS.
+
+
+Include distillery in your mixfile's dependencies:
+```
+  defp deps do
+    [{:distillery, "~> 0.10.0"}]
+  end
+```
+
+and fetch the dependencies with `$ mix deps.get`
+
