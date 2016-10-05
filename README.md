@@ -1,6 +1,7 @@
 # 2016-10-05-runnable-code
+Includes some of the most common ways to run elixir code in your development environment, and ways of creating OTP Releases.
 
-## Flavors:
+## Outline:
 
 * Compile from command line / REPL
 * Running Elixir Script (`.exs`)
@@ -8,6 +9,7 @@
 * Application behaviour
 * Escript
 * Releases & Distillery
+* Final Thoughts, Caveats
 
 
 
@@ -160,7 +162,11 @@ This creates an executable called `demo_application`. You can run it immediately
 
 
 ## Releases with Distillery
-Generates an executable from BEAM files and includes the VM. Should be compiled on the target OS.
+[Distillery](https://hex.pm/packages/distillery) is a library by Paul Schoenfelder (bitwalker), and is a ground-up rewrite/replacement of his popular repository ExRM (Elixir Release Manager). Distillery autmoates a lot of the process to generate OTP releases. 
+
+An OTP release includes your compiled BEAM files, as well as some form of the Erlang run time system (ERTS/erts). Should be compiled on the target OS and CPU architecture. Optionally, you can elect to produce the release without the runtime, but you will need to ensure Erlang is installed on the targeted host machine.
+
+We'll go through the minimum here, but [the documentation is very thorough](https://hexdocs.pm/distillery/walkthrough.html). 
 
 
 Include distillery in your mixfile's dependencies:
@@ -170,5 +176,54 @@ Include distillery in your mixfile's dependencies:
   end
 ```
 
-and fetch the dependencies with `$ mix deps.get`
+and fetch the dependencies with `$ mix deps.get && mix compile`
+
+Then, run `mix release.init` to generate a new `/rel` directory with a config file inside.
+
+At this point, you can edit the config file before making the final release. 
+
+Run `mix release` to generate you new release: 
+For Development:
+```
+$ mix release
+==> Assembling release..
+==> Building release demo_application:0.1.0 using environment dev
+==> You have set dev_mode to true, skipping archival phase
+==> Release successfully built!
+    You can run it in one of the following ways:
+      Interactive: rel/demo_application/bin/demo_application console
+      Foreground: rel/demo_application/bin/demo_application foreground
+      Daemon: rel/demo_application/bin/demo_application start
+```
+
+For Production:
+```
+$ mix release --env=prod
+==> Assembling release..
+==> Building release demo_application:0.1.0 using environment prod
+==> Including ERTS 8.1 from /usr/local/Cellar/erlang/19.1/lib/erlang/erts-8.1
+==> Packaging release..
+==> Release successfully built!
+    You can run it in one of the following ways:
+      Interactive: rel/demo_application/bin/demo_application console
+      Foreground: rel/demo_application/bin/demo_application foreground
+      Daemon: rel/demo_application/bin/demo_application start
+```
+
+The production variant will produce a gzipped tarball that you can deploy on your target machine.
+
+
+## Final Thoughts, Caveats
+Thanks for taking the ride on this tour of creating executable files in Elixir. As you can see, there are a number of options of generating code from quick throwaway scripts to full applications that can be run on machines that don't even have Erlang installed.
+
+This is a surface-level view of the mosst common ways you can get your code into an executable state or out into the world. However, there is much much more to using Elixir/Erlang including running multiple nodes, running an application in the background with mix in `--detached` mode, hot upgrades with releases, and tuning the VM (like raising the maximum number of processes). 
+
+
+## Useful sources: 
+* Programming Elixir (Dave Thomas, Pragmatic Bookshelf) [Chapter 1](https://media.pragprog.com/titles/elixir/introduction.pdf)
+* [Elixir in Action](https://www.manning.com/books/elixir-in-action) (Sasa Juric, Manning) Chapters 11-13 are probably the most useful for using mix, the Application behaviour, escripts, and releases. 
+* [Distillery Documentation](https://hexdocs.pm/distillery/getting-started.html)
+* Elixir-Lang.org's [Getting Started Guide](http://elixir-lang.org/getting-started/introduction.html)
+
+
 
