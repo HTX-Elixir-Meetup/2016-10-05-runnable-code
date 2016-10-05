@@ -32,7 +32,7 @@ Additionally, the user can keep the same iex session after making changes to cod
 
 
 ## Running Elixir Script (.exs)
-Elixir can run in an interpreted, scripted form. These files have the extension `.exs` to differentiate from compilable Elixir code. `.exs` files are typically used for configuration. These files can be exectured directly from the command line by calling on Elixir to run, or by loading it into iex. Note that loading the script into iex will execute the script eagerly.
+Elixir can run in an interpreted form. These files have the extension `.exs` to differentiate from compilable Elixir code. `.exs` files are typically used for configuration. These files can be exectured directly from the command line by calling on Elixir to run, or by loading it into iex. Note that loading the script into iex will execute the script eagerly.
 
 ```
 $ elixir demo_script.exs
@@ -50,7 +50,9 @@ iex(2)>
 
 
 ## Using Mix
-Once your codebase expands beyond a few modules, or you start to include dependencies, you will want to start using a tool to manage the code. Mix ships with Elixir, and functions as a test runner, dependency manager, and a build tool. 
+Once your codebase expands beyond a few modules, or you start to include dependencies, you will want to start using a tool to manage the code. Elixir ships with Mix, and functions as a test runner, dependency manager, and a build tool. 
+
+Make a new project with `$ mix new app_name`. This will create a directory structure, along with config files, a place for your dependencies and beam files to live, and a test directory.
 
 You can even start iex sessions and let mix compile and load in your modules and listed dependencies:
 
@@ -102,8 +104,10 @@ You would also specify this module in the `application/0` function in your `mix.
 
 Mix will use the `start/2` callback in the module you specify, along with any arguments specified in the second element of the tuple. 
 
+All subsequent examples will use both Mix and the Application behaviour.
+
 ## Escripts
-Generates an executable from BEAM files. Requires the user already have the VM installed. Good practice to have a separate module for running the code. 
+Generates an executable from BEAM files. Requires the user already have the VM installed.
 
 To use an Escript, you will need a separate module to run the code from the script. We'll create a module called `demo_CLI.ex` in our lib directory. It requires a function called `main` that accepts arguments from the command line. The module looks like this:
 
@@ -136,7 +140,7 @@ end
 ```
 
 
-In `mix.exs`, include the following within the `project/0` function: `escript: escript` and create a new `escript/0` function: 
+In `mix.exs`, include `escript: escript` within the `project/0` function and create a new `escript/0` function: 
 
 ```
 def escript, do: [main_module: HouTax.CLI]
