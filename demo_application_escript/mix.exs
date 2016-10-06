@@ -8,7 +8,7 @@ defmodule DemoApplication.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      deps: deps(),
-     escript: escript]
+     escript: escript()]
   end
 
   # Configuration for the OTP application
